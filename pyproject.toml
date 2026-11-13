@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "socifyr"
+version = "0.2.0"
+description = "Official Python SDK for Socifyr — the social publishing API for teams and AI agents"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "AGPL-3.0-or-later"
+authors = [{ name = "Socifyr" }]
+keywords = ["socifyr", "social media", "publishing", "api", "ai agents"]
+dependencies = ["requests>=2.28"]
+
+[project.urls]
+Homepage = "https://socifyr.com"
+Documentation = "https://docs.socifyr.com"
+Repository = "https://github.com/Socifyr/socifyr-python"
+Issues = "https://github.com/Socifyr/socifyr-python/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["socifyr"]
