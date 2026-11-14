@@ -21,14 +21,12 @@ class Socifyr:
         client.uploads.text(connections=["x-me"], text="Hello from Python!")
 
     The API key falls back to the ``SOCIFYR_API_KEY`` environment variable.
-    A key belongs to exactly one workspace, so no workspace id is needed;
-    ``workspace_id`` is accepted only for backward compatibility.
+    A key belongs to exactly one workspace, and every call acts on it.
     """
 
     def __init__(
         self,
         api_key: str | None = None,
-        workspace_id: str | None = None,
         *,
         base_url: str | None = None,
         timeout: float = 30.0,
@@ -38,10 +36,9 @@ class Socifyr:
             raise ValueError(
                 "A Socifyr API key is required (pass api_key or set SOCIFYR_API_KEY)."
             )
-        ws = workspace_id or os.environ.get("SOCIFYR_WORKSPACE_ID")
         url = base_url or os.environ.get("SOCIFYR_API_URL") or DEFAULT_BASE_URL
 
-        self._http = HttpClient(key, ws, url, timeout)
+        self._http = HttpClient(key, url, timeout)
         self.uploads = Uploads(self._http)
         self.workspaces = Workspaces(self._http)
         self.analytics = Analytics(self._http)

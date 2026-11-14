@@ -10,13 +10,11 @@ from .errors import SocifyrError, error_from_response
 
 
 class HttpClient:
-    def __init__(self, api_key: str, workspace_id: str | None, base_url: str, timeout: float):
+    def __init__(self, api_key: str, base_url: str, timeout: float):
         self._base_url = base_url.rstrip("/")
         self._timeout = timeout
         self._session = requests.Session()
         self._session.headers.update({"Authorization": f"Bearer {api_key}"})
-        if workspace_id:
-            self._session.headers["X-Workspace-Id"] = workspace_id
 
     def request(
         self,

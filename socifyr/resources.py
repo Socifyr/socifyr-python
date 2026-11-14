@@ -114,24 +114,14 @@ class Workspaces:
     def __init__(self, http: HttpClient):
         self._http = http
 
-    # An API key belongs to one workspace; "current" is that workspace. The
-    # optional workspace_id arguments remain only for backward compatibility.
+    # An API key belongs to one workspace; "current" is that workspace.
 
-    def list_connections(self, workspace_id: str | None = None) -> list[dict]:
-        return self._http.get(f"/workspaces/{workspace_id or 'current'}/connections")
+    def list_connections(self) -> list[dict]:
+        return self._http.get("/workspaces/current/connections")
 
-    def refresh_connection(self, *args: str) -> dict:
-        """Renew a connection's token: ``refresh_connection("x-me")``. Raises if it can't refresh — use reconnect_link.
-
-        The legacy form ``refresh_connection(workspace_id, connection)`` still works.
-        """
-        if len(args) == 1:
-            workspace_id, connection = None, args[0]
-        elif len(args) == 2:
-            workspace_id, connection = args
-        else:
-            raise TypeError("refresh_connection() takes a connection slug or id")
-        return self._http.post(f"/workspaces/{workspace_id or 'current'}/connections/{connection}/refresh")
+    def refresh_connection(self, connection: str) -> dict:
+        """Renew a connection's token: ``refresh_connection("x-me")``. Raises if it can't refresh — use reconnect_link."""
+        return self._http.post(f"/workspaces/current/connections/{connection}/refresh")
 
     def reconnect_link(self, connection: str) -> dict:
         """Short-lived single-use URL the owner opens to re-authorize a connection (no dashboard visit)."""

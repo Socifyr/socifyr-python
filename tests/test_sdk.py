@@ -28,7 +28,7 @@ def _resp(status=200, json_body=None, is_json=True):
 
 class ClientTests(unittest.TestCase):
     def _client(self, resp):
-        c = Socifyr(api_key="sk_test", workspace_id="ws_1")
+        c = Socifyr(api_key="sk_test")
         c._http._session = MagicMock()
         c._http._session.request.return_value = resp
         return c
@@ -43,14 +43,8 @@ class ClientTests(unittest.TestCase):
 
     def test_refresh_connection_posts_to_refresh_route(self):
         c = self._client(_resp(200, {"success": True, "data": {"status": "active"}}))
-        out = c.workspaces.refresh_connection("ws_1", "x-me")
+        out = c.workspaces.refresh_connection("x-me")
         self.assertEqual(out["status"], "active")
-        args, _ = c._http._session.request.call_args
-        self.assertTrue(args[1].endswith("/workspaces/ws_1/connections/x-me/refresh"))
-
-    def test_refresh_connection_without_workspace_uses_current(self):
-        c = self._client(_resp(200, {"success": True, "data": {"status": "active"}}))
-        c.workspaces.refresh_connection("x-me")
         args, _ = c._http._session.request.call_args
         self.assertTrue(args[1].endswith("/workspaces/current/connections/x-me/refresh"))
 

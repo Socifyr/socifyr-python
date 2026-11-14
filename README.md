@@ -15,7 +15,6 @@ from socifyr import Socifyr
 
 client = Socifyr(api_key="sk_...")
 # or set SOCIFYR_API_KEY in the environment
-# The key belongs to one workspace; there is no workspace ID to pass.
 
 # Publish text to multiple platforms by slug
 client.uploads.text(
